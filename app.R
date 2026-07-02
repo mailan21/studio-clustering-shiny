@@ -1,10 +1,5 @@
-library(shiny)
-library(shinydashboard)
-library(tidyverse)
-library(cluster)
-library(readxl)
-library(DT)
 
+<<<<<<< HEAD
 ui <- dashboardPage(
   skin = "blue",
   dashboardHeader(title = "Clustering Studio 🌸"),
@@ -32,3 +27,5 @@ ui <- dashboardPage(
       )
     )
   ),
+=======
+>>>>>>> 635d162809497c27ed4a39cea18d5ab21c7ce8a3
