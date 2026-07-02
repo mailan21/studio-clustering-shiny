@@ -1,3 +1,10 @@
+library(shiny)
+library(shinydashboard)
+library(tidyverse)
+library(cluster)
+library(readxl)
+library(DT)
+
 ui <- dashboardPage(
   skin = "blue",
   dashboardHeader(title = "Clustering Studio 🌸"),
@@ -247,3 +254,34 @@ server <- function(input, output, session) {
     df_filtered <- df_filtered[complete.cases(df_filtered[, cluster_cols, drop = FALSE]), ]
     return(list(data = df_filtered, cols = cluster_cols, label = label_col))
   })
+  
+  output$var_select <- renderUI({
+    req(filtered_data())
+    cluster_cols <- filtered_data()$cols
+    checkboxGroupInput("selected_vars", "3. Pilih Komponen Indikator:", choices = cluster_cols, selected = cluster_cols[1:min(3, length(cluster_cols))])
+  })
+  
+  components_data <- reactive({
+    req(filtered_data(), input$selected_vars, input$clusters)
+    df_active <- filtered_data()$data
+    km_data <- df_active %>% select(all_of(input$selected_vars))
+    if(nrow(km_data) < input$clusters || length(input$selected_vars) < 2) return(NULL)
+    
+    km_data_scaled <- scale(km_data)
+    set.seed(123) 
+    km <- kmeans(km_data_scaled, centers = input$clusters, nstart = 25)
+    pca_res <- prcomp(km_data_scaled, scale. = FALSE)
+    
+    plot_df <- as.data.frame(pca_res$x[, 1:2])
+    plot_df$Cluster <- as.factor(km$cluster)
+    plot_df$ObjectLabel <- df_active[[filtered_data()$label]]
+    return(list(km = km, plot_df = plot_df, vars = input$selected_vars, scaled_data = km_data_scaled))
+  })
+  
+  output$elbow_plot <- renderPlot({
+    req(components_data())
+    scaled_matrix <- components_data()$scaled_data
+    
+    wss <- sapply(1:10, function(k) {
+      kmeans(scaled_matrix, centers = k, nstart = 10)$tot.withinss
+    })
