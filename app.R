@@ -19,7 +19,7 @@ ui <- dashboardPage(
       # ========================================================
       # Tempat menaruh kode "menuItem" masing-masing anggota:
       # ========================================================
-      # [ANGGOTA 2 TARUH KODE MENUITEM DI SINI]
+     menuItem("Dashboard & Ringkasan", tabName = "menu_dashboard", icon = icon("th-large")),
       # [ANGGOTA 3 TARUH KODE MENUITEM DI SINI]
       # [ANGGOTA 4 TARUH KODE MENUITEM DI SINI]
       # [ANGGOTA 5 TARUH KODE MENUITEM DI SINI]
@@ -64,7 +64,25 @@ ui <- dashboardPage(
       # ========================================================
       # Tempat menaruh kode "tabItem" masing-masing anggota:
       # ========================================================
-      # [ANGGOTA 2 TARUH KODE TABITEM DI SINI]
+      tabItem(tabName = "menu_dashboard",
+        h2(style = "font-family: 'Comfortaa', cursive; font-weight: bold;", "📊 Dasbor Ikhtisar Berkas"),
+        p("Selamat datang! Halaman ini menampilkan ringkasan data yang diunggah secara otomatis."),
+        br(),
+        fluidRow(
+          valueBoxOutput("vbox_rows", width = 4),
+          valueBoxOutput("vbox_vars", width = 4),
+          valueBoxOutput("vbox_clusters", width = 4)
+        ),
+        br(),
+        fluidRow(
+          box(title = "💡 Petunjuk Penggunaan Aplikasi", status = "primary", solidHeader = TRUE, width = 12,
+              p(tags$b("Langkah 1:"), " Unggah file dataset Anda melalui menu di kiri bawah (bisa berupa .xlsx, .xls, atau .csv)."),
+              p(tags$b("Langkah 2:"), " Pilih periode analisis data (jika terdeteksi kolom tahun di dalam berkas)."),
+              p(tags$b("Langkah 3:"), " Centang variabel numerik apa saja yang ingin Anda jadikan sebagai dasar pengelompokan."),
+              p(tags$b("Langkah 4:"), " Klik menu di samping kiri untuk melihat visualisasi pencaran kelompok maupun unduh hasil perhitungan.")
+          )
+        )
+),
       # [ANGGOTA 3 TARUH KODE TABITEM DI SINI]
       # [ANGGOTA 4 TARUH KODE TABITEM DI SINI]
       # [ANGGOTA 5 TARUH KODE TABITEM DI SINI]
@@ -116,7 +134,9 @@ server <- function(input, output, session) {
   # ========================================================
   # Tempat menaruh kode "output" masing-masing anggota:
   # ========================================================
-  # [ANGGOTA 2 TARUH KODE SERVER DI SINI]
+  output$vbox_rows <- renderValueBox({ val <- if(!is.null(raw_data())) nrow(raw_data()) else 0; valueBox(val, "Total Baris Data", icon = icon("database"), color = "purple") })
+output$vbox_vars <- renderValueBox({ val <- if(!is.null(filtered_data())) length(filtered_data()$cols) else 0; valueBox(val, "Variabel Numerik Terdeteksi", icon = icon("calculator"), color = "blue") })
+output$vbox_clusters <- renderValueBox({ valueBox(input$clusters, "Jumlah Kelompok Aktif (k)", icon = icon("cubes"), color = "maroon") })
   # [ANGGOTA 3 TARUH KODE SERVER DI SINI]
   # [ANGGOTA 4 TARUH KODE SERVER DI SINI]
   # [ANGGOTA 5 TARUH KODE SERVER DI SINI]
