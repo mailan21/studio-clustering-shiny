@@ -20,7 +20,7 @@ ui <- dashboardPage(
       # Tempat menaruh kode "menuItem" masing-masing anggota:
       # ========================================================
       # [ANGGOTA 2 TARUH KODE MENUITEM DI SINI]
-      # [ANGGOTA 3 TARUH KODE MENUITEM DI SINI]
+      menuItem("Eksplorasi Data Mentah", tabName = "menu_data", icon = icon("table")),
       # [ANGGOTA 4 TARUH KODE MENUITEM DI SINI]
       # [ANGGOTA 5 TARUH KODE MENUITEM DI SINI]
       # [ANGGOTA 6 TARUH KODE MENUITEM DI SINI]
@@ -65,7 +65,11 @@ ui <- dashboardPage(
       # Tempat menaruh kode "tabItem" masing-masing anggota:
       # ========================================================
       # [ANGGOTA 2 TARUH KODE TABITEM DI SINI]
-      # [ANGGOTA 3 TARUH KODE TABITEM DI SINI]
+      tabItem(tabName = "menu_data",
+        uiOutput("dataset_title"),
+        hr(),
+        box(width = 12, DT::DTOutput("table_data"))
+),
       # [ANGGOTA 4 TARUH KODE TABITEM DI SINI]
       # [ANGGOTA 5 TARUH KODE TABITEM DI SINI]
       # [ANGGOTA 6 TARUH KODE TABITEM DI SINI]
@@ -117,7 +121,7 @@ server <- function(input, output, session) {
   # Tempat menaruh kode "output" masing-masing anggota:
   # ========================================================
   # [ANGGOTA 2 TARUH KODE SERVER DI SINI]
-  # [ANGGOTA 3 TARUH KODE SERVER DI SINI]
+  output$table_data <- DT::renderDT({ req(raw_data()); datatable(raw_data(), options = list(pageLength = 5, scrollX = TRUE)) })
   # [ANGGOTA 4 TARUH KODE SERVER DI SINI]
   # [ANGGOTA 5 TARUH KODE SERVER DI SINI]
   # [ANGGOTA 6 TARUH KODE SERVER DI SINI]
