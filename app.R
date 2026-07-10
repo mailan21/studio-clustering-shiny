@@ -23,7 +23,7 @@ ui <- dashboardPage(
       menuItem("Eksplorasi Data Mentah", tabName = "menu_data", icon = icon("table")),
       # [ANGGOTA 4 TARUH KODE MENUITEM DI SINI]
       # [ANGGOTA 5 TARUH KODE MENUITEM DI SINI]
-      # [ANGGOTA 6 TARUH KODE MENUITEM DI SINI]
+      menuItem("Unduh Hasil Akhir", tabName = "menu_download", icon = icon("download")),
       # ========================================================
       
       hr(),
@@ -72,7 +72,14 @@ ui <- dashboardPage(
 ),
       # [ANGGOTA 4 TARUH KODE TABITEM DI SINI]
       # [ANGGOTA 5 TARUH KODE TABITEM DI SINI]
-      # [ANGGOTA 6 TARUH KODE TABITEM DI SINI]
+      tabItem(tabName = "menu_download",
+        h3("🗂️ Ringkasan Tabel Label Hasil Kluster"),
+        p("Silakan periksa lembar rangkuman di bawah ini lalu klik tombol unduh untuk menyimpannya ke format file Excel/CSV."),
+        br(),
+        downloadButton("download_data", " 📥 Unduh Berkas Hasil Akhir (.csv)"),
+        br(), br(),
+        box(width = 12, DT::DTOutput("table_clustered"))
+)
       # ========================================================
     )
   )
@@ -124,7 +131,20 @@ server <- function(input, output, session) {
   output$table_data <- DT::renderDT({ req(raw_data()); datatable(raw_data(), options = list(pageLength = 5, scrollX = TRUE)) })
   # [ANGGOTA 4 TARUH KODE SERVER DI SINI]
   # [ANGGOTA 5 TARUH KODE SERVER DI SINI]
-  # [ANGGOTA 6 TARUH KODE SERVER DI SINI]
+ final_clustered_table <- reactive({
+  req(filtered_data(), components_data()); df_final <- filtered_data()$data; df_final$Cluster_Hasil_Analisis <- components_data()$km$cluster
+  l_col <- filtered_data()$label; year_col <- grep("year|tahun|waktu|periode", colnames(df_final), ignore.case = TRUE, value = TRUE)[1]
+  if(!is.na(year_col)){ df_final <- df_final %>% select(all_of(year_col), Identification = all_of(l_col), Cluster_Hasil_Analisis, everything()) } 
+  else { df_final <- df_final %>% select(Identification = all_of(l_col), Cluster_Hasil_Analisis, everything()) }
+  return(df_final)
+})
+
+output$table_clustered <- DT::renderDT({ req(final_clustered_table()); datatable(final_clustered_table(), options = list(pageLength = 10, scrollX = TRUE)) })
+
+output$download_data <- downloadHandler(
+  filename = function() { "Hasil_Studio_Clustering.csv" },
+  content = function(file) { write.csv(final_clustered_table(), file, row.names = FALSE) }
+)
   # ========================================================
 }
 
