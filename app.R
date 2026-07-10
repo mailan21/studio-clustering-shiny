@@ -21,7 +21,7 @@ ui <- dashboardPage(
       # ========================================================
       # [ANGGOTA 2 TARUH KODE MENUITEM DI SINI]
       menuItem("Eksplorasi Data Mentah", tabName = "menu_data", icon = icon("table")),
-      # [ANGGOTA 4 TARUH KODE MENUITEM DI SINI]
+      menuItem("Optimasi Kluster (Elbow)", tabName = "menu_elbow", icon = icon("chart-line")),
       # [ANGGOTA 5 TARUH KODE MENUITEM DI SINI]
       # [ANGGOTA 6 TARUH KODE MENUITEM DI SINI]
       # ========================================================
@@ -70,7 +70,13 @@ ui <- dashboardPage(
         hr(),
         box(width = 12, DT::DTOutput("table_data"))
 ),
-      # [ANGGOTA 4 TARUH KODE TABITEM DI SINI]
+      tabItem(tabName = "menu_elbow",
+        h3("📈 Metode Elbow (Penentuan Jumlah Kelompok Optimal)"),
+        p("Grafik di bawah menunjukkan total jarak kuadrat dalam kelompok (WCSS). Titik di mana penurunan mulai melandai (seperti siku tangan) menandakan jumlah kluster terbaik."),
+        br(),
+        box(title = "Grafik Siku (Elbow Plot)", status = "primary", solidHeader = TRUE, width = 12,
+            plotOutput("elbow_plot", height = "400px"))
+),
       # [ANGGOTA 5 TARUH KODE TABITEM DI SINI]
       # [ANGGOTA 6 TARUH KODE TABITEM DI SINI]
       # ========================================================
@@ -122,7 +128,16 @@ server <- function(input, output, session) {
   # ========================================================
   # [ANGGOTA 2 TARUH KODE SERVER DI SINI]
   output$table_data <- DT::renderDT({ req(raw_data()); datatable(raw_data(), options = list(pageLength = 5, scrollX = TRUE)) })
-  # [ANGGOTA 4 TARUH KODE SERVER DI SINI]
+  output$elbow_plot <- renderPlot({
+    req(components_data()); scaled_matrix <- components_data()$scaled_data
+    wss <- sapply(1:10, function(k) { kmeans(scaled_matrix, centers = k, nstart = 10)$tot.withinss })
+    elbow_df <- data.frame(k = 1:10, wss = wss)
+    ggplot(elbow_df, aes(x = k, y = wss)) +
+      geom_line(color = "#b19cd9", size = 1.2) + geom_point(color = "#a7dbf5", size = 4) +
+      scale_x_continuous(breaks = 1:10) + theme_minimal(base_size = 14) +
+      theme(text = element_text(family = "Poppins")) +
+      labs(title = "Hasil Evaluasi Jarak WCSS Terhadap Nilai k", x = "Jumlah Kluster (k)", y = "Total Jarak Dalam Kelompok (WCSS)")
+  })
   # [ANGGOTA 5 TARUH KODE SERVER DI SINI]
   # [ANGGOTA 6 TARUH KODE SERVER DI SINI]
   # ========================================================
