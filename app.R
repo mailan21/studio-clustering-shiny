@@ -1,5 +1,3 @@
-
-<<<<<<< HEAD
 ui <- dashboardPage(
   skin = "blue",
   dashboardHeader(title = "Clustering Studio 🌸"),
@@ -27,5 +25,96 @@ ui <- dashboardPage(
       )
     )
   ),
-=======
->>>>>>> 635d162809497c27ed4a39cea18d5ab21c7ce8a3
+  
+  dashboardBody(
+    tags$head(
+      tags$link(rel = "stylesheet", href = "https://fonts.googleapis.com/css2?family=Comfortaa:wght@500;700&family=Poppins:wght@400;600;700&display=swap"),
+      tags$style(HTML("
+        body, .main-sidebar, .navbar, .logo, h3, h4, h5, p, label {
+          font-family: 'Poppins', sans-serif !important;
+        }
+        
+        .skin-blue .main-header .navbar, .skin-blue .main-header .logo {
+          background: linear-gradient(135deg, #ffc0cb 0%, #e6e6fa 100%) !important;
+          color: #4a4a4a !important;
+          font-weight: 700 !important;
+          font-family: 'Comfortaa', cursive !important;
+        }
+        .skin-blue .main-header .navbar .sidebar-toggle { color: #4a4a4a !important; }
+        
+        .skin-blue .main-sidebar {
+          background-color: #f3effa !important;
+          border-right: 1px solid #e1d8f5;
+        }
+        
+        .skin-blue .wrapper, .skin-blue .main-sidebar, .left-side {
+          background-color: #f3effa !important;
+        }
+        
+        .skin-blue .main-sidebar .sidebar .sidebar-menu li a {
+          color: #1a1a1a !important;
+          font-weight: 600 !important;
+        }
+        .skin-blue .main-sidebar .sidebar .sidebar-menu li.active a,
+        .skin-blue .main-sidebar .sidebar .sidebar-menu li a:hover {
+          background: linear-gradient(90deg, #ffc0cb 0%, #e6e6fa 100%) !important;
+          color: #000000 !important;
+          border-left-color: #b19cd9 !important;
+        }
+        
+        .skin-blue .main-sidebar .sidebar label,
+        .skin-blue .main-sidebar .sidebar .control-label,
+        .skin-blue .main-sidebar .sidebar .shiny-input-container {
+          color: #000000 !important;
+          font-weight: 700 !important;
+        }
+        
+        .skin-blue .main-sidebar .sidebar input[type='number'] {
+          color: #000000 !important;
+          background-color: #ffffff !important;
+          border: 1px solid #dcd1f0 !important;
+          border-radius: 8px !important;
+        }
+        
+        .box {
+          border-radius: 16px !important;
+          box-shadow: 0 8px 24px rgba(186, 164, 219, 0.15) !important;
+          border: none !important;
+          background: #ffffff !important;
+          overflow: hidden;
+          transition: transform 0.3s ease;
+        }
+        .box:hover { transform: translateY(-2px); }
+        
+        .box.box-solid.box-primary > .box-header {
+          background: linear-gradient(135deg, #a7dbf5 0%, #c3e7fa 100%) !important;
+          color: #4a4a4a !important;
+          font-weight: bold;
+        }
+        .box.box-solid.box-info > .box-header {
+          background: linear-gradient(135deg, #ffdfd3 0%, #ffedf2 100%) !important;
+          color: #4a4a4a !important;
+        }
+        
+        #download_data {
+          background: linear-gradient(135deg, #a7dbf5 0%, #ffc0cb 100%) !important;
+          color: #4a4a4a !important;
+          border: none;
+          font-weight: bold;
+          border-radius: 20px;
+          padding: 10px 25px;
+        }
+        
+        .content-wrapper, .right-side { background-color: #fcfbfe !important; }
+        
+        .small-box { 
+          border-radius: 16px !important; 
+          color: #4a4a4a !important; 
+          box-shadow: 0 8px 20px rgba(186, 164, 219, 0.1) !important;
+        }
+        
+        .small-box.bg-purple { background: linear-gradient(135deg, #e6e6fa 0%, #f3effa 100%) !important; }
+        .small-box.bg-blue   { background: linear-gradient(135deg, #a7dbf5 0%, #c3e7fa 100%) !important; }
+        .small-box.bg-maroon { background: linear-gradient(135deg, #ffdfd3 0%, #ffedf2 100%) !important; }
+      "))
+    ),
