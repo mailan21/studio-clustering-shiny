@@ -209,3 +209,41 @@ server <- function(input, output, session) {
   output$vbox_clusters <- renderValueBox({
     valueBox(input$clusters, "Jumlah Kelompok Aktif (k)", icon = icon("cubes"), color = "maroon")
   })
+
+  output$dataset_title <- renderUI({
+    req(input$file)
+    h3(style = "font-family: 'Comfortaa', cursive; font-weight: bold; color: #5a5a5a;", paste("📂 Berkas Aktif:", input$file$name))
+  })
+  
+  output$year_select <- renderUI({
+    req(raw_data())
+    df <- raw_data()
+    year_col <- grep("year|tahun|waktu|periode", colnames(df), ignore.case = TRUE, value = TRUE)[1]
+    
+    if(!is.na(year_col)) {
+      years <- sort(unique(df[[year_col]]), decreasing = TRUE)
+      selectInput("selected_year", "2. Pilih Periode Analisis:", choices = years, selected = years[1])
+    }
+  })
+  
+  filtered_data <- reactive({
+    req(raw_data())
+    df <- raw_data()
+    year_col <- grep("year|tahun|waktu|periode", colnames(df), ignore.case = TRUE, value = TRUE)[1]
+    
+    if(!is.na(year_col) && !is.null(input$selected_year)) {
+      df_filtered <- df[df[[year_col]] == input$selected_year, ]
+    } else {
+      df_filtered <- df
+    }
+    
+    num_cols <- names(df_filtered)[sapply(df_filtered, is.numeric)]
+    ignore_cols <- grep("year|tahun|rank|index|id|whisker|kode|no", num_cols, ignore.case = TRUE, value = TRUE)
+    cluster_cols <- setdiff(num_cols, ignore_cols)
+    
+    label_col <- grep("country|negara|name|nama|objek|id|produk", colnames(df_filtered), ignore.case = TRUE, value = TRUE)[1]
+    if(is.na(label_col)) label_col <- colnames(df_filtered)[1]
+    
+    df_filtered <- df_filtered[complete.cases(df_filtered[, cluster_cols, drop = FALSE]), ]
+    return(list(data = df_filtered, cols = cluster_cols, label = label_col))
+  })
