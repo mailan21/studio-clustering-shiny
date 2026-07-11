@@ -285,3 +285,67 @@ server <- function(input, output, session) {
     wss <- sapply(1:10, function(k) {
       kmeans(scaled_matrix, centers = k, nstart = 10)$tot.withinss
     })
+
+    elbow_df <- data.frame(k = 1:10, wss = wss)
+    
+    ggplot(elbow_df, aes(x = k, y = wss)) +
+      geom_line(color = "#b19cd9", size = 1.2) +
+      geom_point(color = "#a7dbf5", size = 4) +
+      scale_x_continuous(breaks = 1:10) +
+      theme_minimal(base_size = 14) +
+      theme(text = element_text(family = "Poppins")) +
+      labs(title = "Hasil Evaluasi Jarak WCSS Terhadap Nilai k", x = "Jumlah Kluster (k)", y = "Total Jarak Dalam Kelompok (WCSS)")
+  })
+  
+  output$sumbu_x_label <- renderText({ req(components_data()); "Komponen Utama 1 (PC1) - Merangkum variasi terbesar dari variabel pilihan Anda." })
+  output$sumbu_y_label <- renderText({ req(components_data()); "Komponen Utama 2 (PC2) - Merangkum sisa variasi dari variabel pilihan Anda." })
+  
+  output$table_data <- DT::renderDT({ req(raw_data()); datatable(raw_data(), options = list(pageLength = 5, scrollX = TRUE)) })
+  
+  output$cluster_plot <- renderPlot({
+    req(components_data())
+    plot_df <- components_data()$plot_df
+    
+    ggplot(plot_df, aes(x = PC1, y = PC2, color = Cluster)) +
+      geom_point(size = 4.5, alpha = 0.85) +
+      theme_minimal(base_size = 14) +
+      scale_color_brewer(palette = "Pastel1") + 
+      theme(
+        text = element_text(family = "Poppins"),
+        plot.title = element_text(face = "bold", size = 15, color = "#4a4a4a"),
+        panel.grid.major = element_line(color = "#f0f0f0"),
+        panel.grid.minor = element_blank()
+      ) +
+      labs(title = "🗺️ Pemetaan Koordinat Karakteristik Objek", x = "Komponen Utama X (PC1)", y = "Komponen Utama Y (PC2)", color = "Kelompok Kluster")
+  })
+  
+  output$cluster_centers <- renderPrint({ req(components_data()); print(components_data()$km$centers) })
+  output$cluster_size <- renderPrint({ req(components_data()); cat("Jumlah Objek per Kelompok:\n"); print(components_data()$km$size) })
+  
+  final_clustered_table <- reactive({
+    req(filtered_data(), components_data())
+    df_final <- filtered_data()$data
+    df_final$Cluster_Hasil_Analisis <- components_data()$km$cluster
+    l_col <- filtered_data()$label
+    year_col <- grep("year|tahun|waktu|periode", colnames(df_final), ignore.case = TRUE, value = TRUE)[1]
+    
+    if(!is.na(year_col)){
+      df_final <- df_final %>% select(all_of(year_col), Identification = all_of(l_col), Cluster_Hasil_Analisis, everything())
+    } else {
+      df_final <- df_final %>% select(Identification = all_of(l_col), Cluster_Hasil_Analisis, everything())
+    }
+    return(df_final)
+  })
+  
+  output$table_clustered <- DT::renderDT({
+    req(final_clustered_table())
+    datatable(final_clustered_table(), options = list(pageLength = 10, scrollX = TRUE))
+  })
+  
+  output$download_data <- downloadHandler(
+    filename = function() { "Hasil_Studio_Clustering.csv" },
+    content = function(file) { write.csv(final_clustered_table(), file, row.names = FALSE) }
+  )
+}
+
+shinyApp(ui, server)
