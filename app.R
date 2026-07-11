@@ -181,3 +181,31 @@ ui <- dashboardPage(
     )
   )
 )
+
+server <- function(input, output, session) {
+  
+  raw_data <- reactive({
+    req(input$file)
+    ext <- tools::file_ext(input$file$name)
+    if (ext %in% c("xlsx", "xls")) {
+      df <- read_excel(input$file$datapath)
+    } else if (ext == "csv") {
+      df <- read.csv(input$file$datapath, stringsAsFactors = FALSE, check.names = FALSE)
+    } else {
+      showNotification("Format file salah!", type = "error")
+      return(NULL)
+    }
+    return(as.data.frame(df))
+  })
+  
+  output$vbox_rows <- renderValueBox({
+    val <- if(!is.null(raw_data())) nrow(raw_data()) else 0
+    valueBox(val, "Total Baris Data", icon = icon("database"), color = "purple")
+  })
+  output$vbox_vars <- renderValueBox({
+    val <- if(!is.null(filtered_data())) length(filtered_data()$cols) else 0
+    valueBox(val, "Variabel Numerik Terdeteksi", icon = icon("calculator"), color = "blue")
+  })
+  output$vbox_clusters <- renderValueBox({
+    valueBox(input$clusters, "Jumlah Kelompok Aktif (k)", icon = icon("cubes"), color = "maroon")
+  })
