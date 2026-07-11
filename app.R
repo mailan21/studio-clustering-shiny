@@ -1,10 +1,5 @@
-library(shiny)
-library(shinydashboard)
-library(tidyverse)
-library(cluster)
-library(readxl)
-library(DT)
 
+<<<<<<< HEAD
 ui <- dashboardPage(
   skin = "blue",
   dashboardHeader(title = "Clustering Studio 🌸"),
@@ -149,3 +144,5 @@ output$table_data <- DT::renderDT({ req(raw_data()); datatable(raw_data(), optio
 }
 
 shinyApp(ui, server)
+=======
+>>>>>>> 635d162809497c27ed4a39cea18d5ab21c7ce8a3
