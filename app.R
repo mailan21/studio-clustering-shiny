@@ -3,6 +3,10 @@
 ui <- dashboardPage(
   skin = "blue",
   dashboardHeader(title = "Clustering Studio 🌸"),
+<<<<<<< HEAD
+=======
+  
+>>>>>>> d210fc98ec57006ae5f44776cb119eda60fbd00e
   dashboardSidebar(
     sidebarMenu(
       id = "tabs",
@@ -11,6 +15,7 @@ ui <- dashboardPage(
           h4("✨ MENU STUDIO ✨", style = "color: #4a4a4a; font-family: 'Poppins', sans-serif; font-weight: 800;")),
       hr(),
       
+<<<<<<< HEAD
       # ========================================================
       # Tempat menaruh kode "menuItem" masing-masing anggota:
       # ========================================================
@@ -20,6 +25,13 @@ ui <- dashboardPage(
       # [ANGGOTA 5 TARUH KODE MENUITEM DI SINI]
       # [ANGGOTA 6 TARUH KODE MENUITEM DI SINI]
       # ========================================================
+=======
+      menuItem("Dashboard & Ringkasan", tabName = "menu_dashboard", icon = icon("th-large")),
+      menuItem("Eksplorasi Data Mentah", tabName = "menu_data", icon = icon("table")),
+      menuItem("Optimasi Kluster (Elbow)", tabName = "menu_elbow", icon = icon("chart-line")),
+      menuItem("Studio Analisis K-Means", tabName = "menu_kmeans", icon = icon("chart-pie")),
+      menuItem("Unduh Hasil Akhir", tabName = "menu_download", icon = icon("download")),
+>>>>>>> d210fc98ec57006ae5f44776cb119eda60fbd00e
       
       hr(),
       div(style = "padding: 15px; color: #000000;",
@@ -30,6 +42,7 @@ ui <- dashboardPage(
       )
     )
   ),
+<<<<<<< HEAD
   dashboardBody(
     tags$head(
       tags$link(rel = "stylesheet", href = "https://fonts.googleapis.com/css2?family=Comfortaa:wght=500;700&family=Poppins:wght=400;600;700&display=swap"),
@@ -144,5 +157,7 @@ output$table_data <- DT::renderDT({ req(raw_data()); datatable(raw_data(), optio
 }
 
 shinyApp(ui, server)
+=======
+>>>>>>> d210fc98ec57006ae5f44776cb119eda60fbd00e
 =======
 >>>>>>> 635d162809497c27ed4a39cea18d5ab21c7ce8a3
