@@ -118,3 +118,66 @@ ui <- dashboardPage(
         .small-box.bg-maroon { background: linear-gradient(135deg, #ffdfd3 0%, #ffedf2 100%) !important; }
       "))
     ),
+    tabItems(
+      tabItem(tabName = "menu_dashboard",
+              h2(style = "font-family: 'Comfortaa', cursive; font-weight: bold;", "📊 Dasbor Ikhtisar Berkas"),
+              p("Selamat datang! Halaman ini menampilkan ringkasan data yang diunggah secara otomatis."),
+              br(),
+              fluidRow(
+                valueBoxOutput("vbox_rows", width = 4),
+                valueBoxOutput("vbox_vars", width = 4),
+                valueBoxOutput("vbox_clusters", width = 4)
+              ),
+              br(),
+              fluidRow(
+                box(title = "💡 Petunjuk Penggunaan Aplikasi", status = "primary", solidHeader = TRUE, width = 12,
+                    p(tags$b("Langkah 1:"), " Unggah file dataset Anda melalui menu di kiri bawah (bisa berupa .xlsx, .xls, atau .csv)."),
+                    p(tags$b("Langkah 2:"), " Pilih periode analisis data (jika terdeteksi kolom tahun di dalam berkas)."),
+                    p(tags$b("Langkah 3:"), " Centang variabel numerik apa saja yang ingin Anda jadikan sebagai dasar pengelompokan."),
+                    p(tags$b("Langkah 4:"), " Klik menu di samping kiri untuk melihat visualisasi pencaran kelompok maupun unduh hasil perhitungan.")
+                )
+              )
+      ),
+      
+      tabItem(tabName = "menu_data",
+              uiOutput("dataset_title"),
+              hr(),
+              box(width = 12, DT::DTOutput("table_data"))
+      ),
+      
+      tabItem(tabName = "menu_elbow",
+              h3("📈 Metode Elbow (Penentuan Jumlah Kelompok Optimal)"),
+              p("Grafik di bawah menunjukkan total jarak kuadrat dalam kelompok (WCSS). Titik di mana penurunan mulai melandai (seperti siku tangan) menandakan jumlah kluster terbaik."),
+              br(),
+              box(title = "Grafik Siku (Elbow Plot)", status = "primary", solidHeader = TRUE, width = 12,
+                  plotOutput("elbow_plot", height = "400px"))
+      ),
+      
+      tabItem(tabName = "menu_kmeans",
+              fluidRow(
+                box(title = "🎨 Peta Distribusi Kelompok (K-Means + PCA)", status = "primary", solidHeader = TRUE, width = 8,
+                    plotOutput("cluster_plot", height = "460px")),
+                
+                box(title = "📌 Panduan Navigasi Sumbu", status = "primary", solidHeader = TRUE, width = 4,
+                    h5(tags$b("🔮 Sumbu Horizontal X:")), textOutput("sumbu_x_label"), br(),
+                    h5(tags$b("🔮 Sumbu Vertikal Y:")), textOutput("sumbu_y_label"), hr(),
+                    h5(tags$b("🦄 Distribusi Anggota Kelompok:")), verbatimTextOutput("cluster_size"))
+              ),
+              fluidRow(
+                box(title = "🧬 Pusat Karakteristik Kelompok (Cluster Centers)", status = "info", solidHeader = TRUE, width = 12,
+                    p("Nilai rata-rata tiap indikator angka setelah distandardisasi yang mencirikan tiap kelompok:"),
+                    verbatimTextOutput("cluster_centers"))
+              )
+      ),
+      
+      tabItem(tabName = "menu_download",
+              h3("🗂️ Ringkasan Tabel Label Hasil Kluster"),
+              p("Silakan periksa lembar rangkuman di bawah ini lalu klik tombol unduh untuk menyimpannya ke format file Excel/CSV."),
+              br(),
+              downloadButton("download_data", " 📥 Unduh Berkas Hasil Akhir (.csv)"),
+              br(), br(),
+              box(width = 12, DT::DTOutput("table_clustered"))
+      )
+    )
+  )
+)
