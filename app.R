@@ -1,1 +1,183 @@
-
+ui <- dashboardPage(
+  skin = "blue",
+  dashboardHeader(title = "Clustering Studio 🌸"),
+  
+  dashboardSidebar(
+    sidebarMenu(
+      id = "tabs",
+      br(),
+      div(style = "text-align: center; padding: 10px;",
+          h4("✨ MENU STUDIO ✨", style = "color: #4a4a4a; font-family: 'Poppins', sans-serif; font-weight: 800;")),
+      hr(),
+      
+      menuItem("Dashboard & Ringkasan", tabName = "menu_dashboard", icon = icon("th-large")),
+      menuItem("Eksplorasi Data Mentah", tabName = "menu_data", icon = icon("table")),
+      menuItem("Optimasi Kluster (Elbow)", tabName = "menu_elbow", icon = icon("chart-line")),
+      menuItem("Studio Analisis K-Means", tabName = "menu_kmeans", icon = icon("chart-pie")),
+      menuItem("Unduh Hasil Akhir", tabName = "menu_download", icon = icon("download")),
+      
+      hr(),
+      div(style = "padding: 15px; color: #000000;",
+          fileInput("file", "1. Unggah Berkas (Excel/CSV)", accept = c(".xlsx", ".xls", ".csv")),
+          uiOutput("year_select"),
+          uiOutput("var_select"),
+          numericInput("clusters", "4. Jumlah Kluster (k):", value = 3, min = 2, max = 10)
+      )
+    )
+  ),
+  
+  dashboardBody(
+    tags$head(
+      tags$link(rel = "stylesheet", href = "https://fonts.googleapis.com/css2?family=Comfortaa:wght@500;700&family=Poppins:wght@400;600;700&display=swap"),
+      tags$style(HTML("
+        body, .main-sidebar, .navbar, .logo, h3, h4, h5, p, label {
+          font-family: 'Poppins', sans-serif !important;
+        }
+        
+        .skin-blue .main-header .navbar, .skin-blue .main-header .logo {
+          background: linear-gradient(135deg, #ffc0cb 0%, #e6e6fa 100%) !important;
+          color: #4a4a4a !important;
+          font-weight: 700 !important;
+          font-family: 'Comfortaa', cursive !important;
+        }
+        .skin-blue .main-header .navbar .sidebar-toggle { color: #4a4a4a !important; }
+        
+        .skin-blue .main-sidebar {
+          background-color: #f3effa !important;
+          border-right: 1px solid #e1d8f5;
+        }
+        
+        .skin-blue .wrapper, .skin-blue .main-sidebar, .left-side {
+          background-color: #f3effa !important;
+        }
+        
+        .skin-blue .main-sidebar .sidebar .sidebar-menu li a {
+          color: #1a1a1a !important;
+          font-weight: 600 !important;
+        }
+        .skin-blue .main-sidebar .sidebar .sidebar-menu li.active a,
+        .skin-blue .main-sidebar .sidebar .sidebar-menu li a:hover {
+          background: linear-gradient(90deg, #ffc0cb 0%, #e6e6fa 100%) !important;
+          color: #000000 !important;
+          border-left-color: #b19cd9 !important;
+        }
+        
+        .skin-blue .main-sidebar .sidebar label,
+        .skin-blue .main-sidebar .sidebar .control-label,
+        .skin-blue .main-sidebar .sidebar .shiny-input-container {
+          color: #000000 !important;
+          font-weight: 700 !important;
+        }
+        
+        .skin-blue .main-sidebar .sidebar input[type='number'] {
+          color: #000000 !important;
+          background-color: #ffffff !important;
+          border: 1px solid #dcd1f0 !important;
+          border-radius: 8px !important;
+        }
+        
+        .box {
+          border-radius: 16px !important;
+          box-shadow: 0 8px 24px rgba(186, 164, 219, 0.15) !important;
+          border: none !important;
+          background: #ffffff !important;
+          overflow: hidden;
+          transition: transform 0.3s ease;
+        }
+        .box:hover { transform: translateY(-2px); }
+        
+        .box.box-solid.box-primary > .box-header {
+          background: linear-gradient(135deg, #a7dbf5 0%, #c3e7fa 100%) !important;
+          color: #4a4a4a !important;
+          font-weight: bold;
+        }
+        .box.box-solid.box-info > .box-header {
+          background: linear-gradient(135deg, #ffdfd3 0%, #ffedf2 100%) !important;
+          color: #4a4a4a !important;
+        }
+        
+        #download_data {
+          background: linear-gradient(135deg, #a7dbf5 0%, #ffc0cb 100%) !important;
+          color: #4a4a4a !important;
+          border: none;
+          font-weight: bold;
+          border-radius: 20px;
+          padding: 10px 25px;
+        }
+        
+        .content-wrapper, .right-side { background-color: #fcfbfe !important; }
+        
+        .small-box { 
+          border-radius: 16px !important; 
+          color: #4a4a4a !important; 
+          box-shadow: 0 8px 20px rgba(186, 164, 219, 0.1) !important;
+        }
+        
+        .small-box.bg-purple { background: linear-gradient(135deg, #e6e6fa 0%, #f3effa 100%) !important; }
+        .small-box.bg-blue   { background: linear-gradient(135deg, #a7dbf5 0%, #c3e7fa 100%) !important; }
+        .small-box.bg-maroon { background: linear-gradient(135deg, #ffdfd3 0%, #ffedf2 100%) !important; }
+      "))
+    ),
+    tabItems(
+      tabItem(tabName = "menu_dashboard",
+              h2(style = "font-family: 'Comfortaa', cursive; font-weight: bold;", "📊 Dasbor Ikhtisar Berkas"),
+              p("Selamat datang! Halaman ini menampilkan ringkasan data yang diunggah secara otomatis."),
+              br(),
+              fluidRow(
+                valueBoxOutput("vbox_rows", width = 4),
+                valueBoxOutput("vbox_vars", width = 4),
+                valueBoxOutput("vbox_clusters", width = 4)
+              ),
+              br(),
+              fluidRow(
+                box(title = "💡 Petunjuk Penggunaan Aplikasi", status = "primary", solidHeader = TRUE, width = 12,
+                    p(tags$b("Langkah 1:"), " Unggah file dataset Anda melalui menu di kiri bawah (bisa berupa .xlsx, .xls, atau .csv)."),
+                    p(tags$b("Langkah 2:"), " Pilih periode analisis data (jika terdeteksi kolom tahun di dalam berkas)."),
+                    p(tags$b("Langkah 3:"), " Centang variabel numerik apa saja yang ingin Anda jadikan sebagai dasar pengelompokan."),
+                    p(tags$b("Langkah 4:"), " Klik menu di samping kiri untuk melihat visualisasi pencaran kelompok maupun unduh hasil perhitungan.")
+                )
+              )
+      ),
+      
+      tabItem(tabName = "menu_data",
+              uiOutput("dataset_title"),
+              hr(),
+              box(width = 12, DT::DTOutput("table_data"))
+      ),
+      
+      tabItem(tabName = "menu_elbow",
+              h3("📈 Metode Elbow (Penentuan Jumlah Kelompok Optimal)"),
+              p("Grafik di bawah menunjukkan total jarak kuadrat dalam kelompok (WCSS). Titik di mana penurunan mulai melandai (seperti siku tangan) menandakan jumlah kluster terbaik."),
+              br(),
+              box(title = "Grafik Siku (Elbow Plot)", status = "primary", solidHeader = TRUE, width = 12,
+                  plotOutput("elbow_plot", height = "400px"))
+      ),
+      
+      tabItem(tabName = "menu_kmeans",
+              fluidRow(
+                box(title = "🎨 Peta Distribusi Kelompok (K-Means + PCA)", status = "primary", solidHeader = TRUE, width = 8,
+                    plotOutput("cluster_plot", height = "460px")),
+                
+                box(title = "📌 Panduan Navigasi Sumbu", status = "primary", solidHeader = TRUE, width = 4,
+                    h5(tags$b("🔮 Sumbu Horizontal X:")), textOutput("sumbu_x_label"), br(),
+                    h5(tags$b("🔮 Sumbu Vertikal Y:")), textOutput("sumbu_y_label"), hr(),
+                    h5(tags$b("🦄 Distribusi Anggota Kelompok:")), verbatimTextOutput("cluster_size"))
+              ),
+              fluidRow(
+                box(title = "🧬 Pusat Karakteristik Kelompok (Cluster Centers)", status = "info", solidHeader = TRUE, width = 12,
+                    p("Nilai rata-rata tiap indikator angka setelah distandardisasi yang mencirikan tiap kelompok:"),
+                    verbatimTextOutput("cluster_centers"))
+              )
+      ),
+      
+      tabItem(tabName = "menu_download",
+              h3("🗂️ Ringkasan Tabel Label Hasil Kluster"),
+              p("Silakan periksa lembar rangkuman di bawah ini lalu klik tombol unduh untuk menyimpannya ke format file Excel/CSV."),
+              br(),
+              downloadButton("download_data", " 📥 Unduh Berkas Hasil Akhir (.csv)"),
+              br(), br(),
+              box(width = 12, DT::DTOutput("table_clustered"))
+      )
+    )
+  )
+)
