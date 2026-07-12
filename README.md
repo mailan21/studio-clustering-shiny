@@ -52,9 +52,9 @@ Proyek dibangun di R dengan packages yang dipakai sebagai berikut:
    ```
    git clone [https://github.com/mailan21/studio-clustering-shiny.git](https://github.com/mailan21/studio-clustering-shiny.git)
    ```
-```
-cd studio-clustering-shiny
-```
+   ```
+   cd studio-clustering-shiny
+   ```
 3. Buka app.R di RStudio.
 4. Jalankan aplikasi dengan menekan tombol Run App (atau gunakan pintasan Ctrl + Shift + Enter).
 
@@ -64,10 +64,10 @@ Kelompok 5 Komputasi Statistika - Statistika B - Universitas Negeri Jakarta
 | Nama | NIM | Branch | Github |
 |---|---|---|---|
 | Rafif Aryaputra Martino | 1314624041 | `branch-dd` | `@rafifaryaputramartino-spec` |
-| Ailsa Larasati | 1314624042 | `branch-ailsa` | `@ails5a` |
+| Ailsa Larasati | 1314624042 | `branch-ailsa` | `@ail5a` |
 | Tara Naira Ramadhani | 1314624050 | `branch-taranairaa` | `@taranairaa` |
 | Mailan Tiorent Simbolon | 1314624054 | `branch-mailan` | `@mailan21` |
-| Muhammad Rafi Ramadhan | 1314624072 | `branch-rafi` | `@jordanrafi62-del` |
+| Muhammad Rafi Ramadhan | 1314624072 | `branch-Rafi` | `@jordanrafi62-del` |
 | Muhammad Irsyad Idzharulhaq | 1314624075 | `branch-irsyad` | `@Irsyad-9` |
 
 ## Tautan Aplikasi Resmi
