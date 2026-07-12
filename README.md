@@ -37,7 +37,7 @@ Proyek dibangun di R dengan packages yang dipakai sebagai berikut:
 | tidyverse | manipulasi data dan visualisasi grafis (ggplot2, dplyr, readr) |
 | readxl | membaca berkas dataset Excel |
 | cluster | komputasi algoritma K-Means |
-| factoextra | visualisasi grafis kluster dan elbow plot profesional |
+| DT | membuat tabel data interaktif dengan fitur pencarian dan filtrasi |
 
 ## Cara Penggunaan
 1. Instalasi packages
