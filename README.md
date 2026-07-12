@@ -50,13 +50,13 @@ Proyek dibangun di R dengan packages yang dipakai sebagai berikut:
    
 2. Clone Repository di RStudio
    ```
-  git clone https://github.com/mailan21/studio-clustering-shiny.git
-   cd studio-clustering-shiny
+   git clone [https://github.com/mailan21/studio-clustering-shiny.git](https://github.com/mailan21/studio-clustering-shiny.git)
    ```
-
+```
+cd studio-clustering-shiny
+```
 3. Buka app.R di RStudio.
 4. Jalankan aplikasi dengan menekan tombol Run App (atau gunakan pintasan Ctrl + Shift + Enter).
-```
 
 ## Kontributor
 Kelompok 5 Komputasi Statistika - Statistika B - Universitas Negeri Jakarta
