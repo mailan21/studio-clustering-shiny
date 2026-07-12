@@ -44,7 +44,7 @@ Proyek dibangun di R dengan packages yang dipakai sebagai berikut:
    ```R
    install.packages(c(
      "shiny", "shinydashboard", "tidyverse", 
-     "readxl", "cluster", "factoextra"
+     "readxl", "cluster", "DT"
    ))
    ```
    
@@ -64,7 +64,7 @@ Kelompok 5 Komputasi Statistika - Statistika B - Universitas Negeri Jakarta
 | Nama | NIM | Branch | Github |
 |---|---|---|---|
 | Rafif Aryaputra Martino | 1314624041 | `branch-dd` | `@rafifaryaputramartino-spec` |
-| Ailsa Larasati | 1314624042 | `branch-ailsa` | `@ail5a` |
+| Ailsa Larasati | 1314624042 | `branch-ail5a` | `@ail5a` |
 | Tara Naira Ramadhani | 1314624050 | `branch-taranairaa` | `@taranairaa` |
 | Mailan Tiorent Simbolon | 1314624054 | `branch-mailan` | `@mailan21` |
 | Muhammad Rafi Ramadhan | 1314624072 | `branch-Rafi` | `@jordanrafi62-del` |
