@@ -2,8 +2,6 @@
 
 Aplikasi berbasis web interaktif yang dibangun menggunakan **R Shiny** dan **Shinydashboard** untuk melakukan analisis pengelompokan (*clustering*) data secara dinamis menggunakan algoritma **K-Means**. 
 
-Proyek ini dibuat untuk memenuhi tugas kelompok mata kuliah, dengan menerapkan alur kerja (*workflow*) berbasis Git/GitHub menggunakan strategi *branching* per anggota.
-
 ## Tentang Proyek
 Proyek ini menyediakan sebuah studio analisis data di mana pengguna dapat mengunggah berkas dataset (Excel/CSV) apa saja secara dinamis, menentukan jumlah kluster ($k$) secara optimal, hingga mengunduh hasil pelabelan data. Repositori ini dirancang transparan dengan melampirkan riwayat kontribusi setiap anggota tim di *branch* masing-masing sebelum digabungkan ke `main`.
 
@@ -48,18 +46,29 @@ Proyek dibangun di R dengan packages yang dipakai sebagai berikut:
      "shiny", "shinydashboard", "tidyverse", 
      "readxl", "cluster", "factoextra"
    ))
+   ```
 2. Clone Repository di RStudio
-   git clone [https://github.com/mailan21/studio-clustering-shiny.git](https://github.com/mailan21/studio-clustering-shiny.git)
+   ```
+  git clone https://github.com/mailan21/studio-clustering-shiny.git
+   ```
+   ```
    cd studio-clustering-shiny
+   ```
 3. Buka app.R di RStudio.
 4. Jalankan aplikasi dengan menekan tombol Run App (atau gunakan pintasan Ctrl + Shift + Enter).
+ ```
 
 ## Kontributor
-Kelompok 5 Komputasi Statistika - Statistika B - Universitas Negeri | Nama | NIM | Branch | Github  
+Kelompok 5 Komputasi Statistika - Statistika B - Universitas Negeri Jakarta
+
+| Nama | NIM | Branch | Github |
 |---|---|---|---|
-| Rafif Aryaputra Martino | 1314624041 | `branch-dd` | `@rafifaryaputramartino-spec`|
-| Ailsa Larasati | 1314624042 | `branch-ail5a` | `@ail5a` |
+| Rafif Aryaputra Martino | 1314624041 | `branch-dd` | `@rafifaryaputramartino-spec` |
+| Ailsa Larasati | 1314624042 | `branch-ailsa` | `@ails5a` |
 | Tara Naira Ramadhani | 1314624050 | `branch-taranairaa` | `@taranairaa` |
 | Mailan Tiorent Simbolon | 1314624054 | `branch-mailan` | `@mailan21` |
-| Muhammad Rafi Ramadhan | 1314624072 | `branch-Rafi` | `@jordanrafi62-del` |
-|Muhammad Irsyad Idzharulhaq | 1314624075 | `branch-irsyad` | `@Irsyad-9` |
+| Muhammad Rafi Ramadhan | 1314624072 | `branch-rafi` | `@jordanrafi62-del` |
+| Muhammad Irsyad Idzharulhaq | 1314624075 | `branch-irsyad` | `@Irsyad-9` |
+
+## Tautan Aplikasi Resmi
+https://clustering-studio.shinyapps.io/studio-clustering/
